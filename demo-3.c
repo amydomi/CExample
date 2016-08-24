@@ -1,6 +1,7 @@
 ﻿#include <stdio.h>
 #include <stdlib.h>
 
+//动态内存的分配与释放
 int main(int argc, char *argv[]) {
 	
 	int len, i, *array;
