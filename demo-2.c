@@ -1,6 +1,7 @@
 ﻿#include <stdio.h>
 #include <stdlib.h>
 
+//九九乘法表
 int main(void) {
 	int i, y;
 	
