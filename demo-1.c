@@ -1,8 +1,8 @@
-#include <stdio.h>
+ï»¿#include <stdio.h>
 
 int main(void)
 {
-	// Ïò¿ØÖÆÌ¨Êä³öHello World
+	// å‘æ§åˆ¶å°è¾“å‡ºHello World
 	printf("Hello World\n");
 	return 0;
 }
