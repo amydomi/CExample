@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// 函数指针作为参数传递的与应用示例
+// 函数指针作为参数传递的应用示例
 int calculate(int, int, int (*)(int, int), const char **error);
 
 int sub(int, int);
@@ -40,9 +40,9 @@ int main(int argc, char **argv)
 
 int calculate(int a, int b, int (* callback)(int, int), const char **error)
 {
-	//传入的函数指针判断，防止出错
+	// 传入的函数指针判断，防止出错
 	if(callback) {
-		return callback(a, b);
+		return (*callback)(a, b);	// 也可以简化为 callback(a, b);
 	} else {
 		*error = "参数必须是函数指针。";
 		return 0;
