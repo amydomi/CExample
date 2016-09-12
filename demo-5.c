@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 // 函数指针作为参数传递的与应用示例
-int calculate(int, int, int (* callback)(int, int), const char **error);
+int calculate(int, int, int (*)(int, int), const char **error);
 
 int sub(int, int);
 int add(int, int);
