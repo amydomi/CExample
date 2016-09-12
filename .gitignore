@@ -31,3 +31,10 @@
 # Debug files
 *.dSYM/
 *.su
+
+# Visual Studio Project
+*.ncb
+*.sln
+*.vcproj
+*.user
+*.suo
