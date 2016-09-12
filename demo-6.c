@@ -13,7 +13,8 @@
 
 typedef int bool;
 
-// SQL命令执行后的回调函数，会将查询来的数据带入此函数中处理，多条数据此函数会被执行多次
+// SQL命令执行后的回调函数，会将查询来的数据带入此函数中处理
+// asColName: 字段名	argv: 数据	argc:记录长度
 static int callback(void *NotUsed, int argc, char **argv, char **azColName)
 {
 	int i;
