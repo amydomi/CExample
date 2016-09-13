@@ -43,7 +43,7 @@ int main(int argc, char **argv)
 	// 循环读取命令
 	while(flag) {
 
-		puts("Please enter a valid SQL statement:");
+		printf("SQLite > ");
 		
 		// 读取一行命令
 		fgets(sql, sizeof(sql), stdin);
