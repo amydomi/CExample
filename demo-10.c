@@ -1,47 +1,56 @@
 #include <Windows.h>
 
-int WINAPI WinMain(
-	HINSTANCE hInstance,
+void SendText();
+void getTimeString(LPWSTR str, INT length);
+
+int WINAPI WinMain(HINSTANCE hInstance,
 	HINSTANCE hPrevInstance,
 	LPSTR lpCmdLine,
 	int nCmdShow)
 {
-	// 打开记事本窗口
-	HINSTANCE hd = ShellExecute(NULL, TEXT("open"), TEXT("C:\\Windows\\notepad.exe"), NULL, TEXT("D:\\"), SW_SHOW);
-
-	// 
-	HWND hWnd = NULL;
-	do {
-		Sleep(300);
-		// 获取父窗口
-		hWnd = FindWindow(NULL, TEXT("无标题 - 记事本"));
-	} while (NULL == hWnd);
-
-	// 获取子窗口
-	HWND childWnd = FindWindowEx(hWnd, NULL, TEXT("Edit"), NULL);
-
-	// 发送字符消息
-	SendMessage(childWnd, WM_CHAR, 'H', 0);
-	SendMessage(childWnd, WM_CHAR, 'E', 0);
-	SendMessage(childWnd, WM_CHAR, 'L', 0);
-	SendMessage(childWnd, WM_CHAR, 'L', 0);
-	SendMessage(childWnd, WM_CHAR, 'O', 0);
-
-	// 发送鼠标右键消息
-	do {
-		Sleep(3000); // 循环3秒一次执行一次右键
-		
-		// 获取当前鼠标的位置
-		POINT point;
-		GetCursorPos(&point);
-
-		// 获取窗口至屏幕的距离
-		RECT rect;
-		GetWindowRect(childWnd, &rect);
-
-		SendMessage(childWnd, WM_RBUTTONDOWN, 0, MAKELPARAM(point.x - rect.left, point.y - rect.top));
-		SendMessage(childWnd, WM_RBUTTONUP, 0, MAKELPARAM(point.x - rect.left, point.y - rect.top));
-	} while (TRUE);
-	
+	SendText();
 	return 0;
+}
+
+// 获取当前日期时间字符串
+void getTimeString(LPWSTR str, INT length)
+{
+	SYSTEMTIME time;
+	GetLocalTime(&time);
+	ZeroMemory(str, length);
+	wsprintf(str, L"当前日期：%d-%02d-%02d  %02d:%02d:%02d", time.wYear, time.wMonth, time.wDay, time.wHour, time.wMinute, time.wSecond);
+}
+
+// 向指定的窗口发送文本消息
+void SendText()
+{
+	// 获取QQ聊天窗口句柄 标题为：我自己的QQ
+	HWND hWnd = FindWindow(NULL, L"我自己的QQ");
+
+	if (NULL == hWnd) {
+		MessageBox(NULL, L"请打开QQ聊天对话框。", L"消息", MB_OK | MB_ICONERROR);
+		return;
+	}
+
+	// 喜欢向这个窗口发送消息
+	while (true)
+	{
+		Sleep(3000);
+
+		WCHAR str[100];
+		WCHAR time[30];
+		getTimeString(time, 30);
+
+		wsprintf(str, L"你好，QQ先生！ %s", time);
+
+
+		for (INT i = 0; i < lstrlen(str); i++) {
+			SendMessage(hWnd, WM_CHAR, (WPARAM)str[i], NULL);
+		}
+
+		SendMessage(hWnd, WM_KEYDOWN, VK_RETURN, NULL);
+		SendMessage(hWnd, WM_CHAR, 0x13, NULL);
+		SendMessage(hWnd, WM_KEYUP, VK_RETURN, NULL);
+	}
+
 }
