@@ -1,89 +1,75 @@
 #include <Windows.h>
+#include <tchar.h>
 
 LRESULT CALLBACK WindowProc(HWND, UINT, WPARAM, LPARAM);
 
-int WINAPI WinMain(
-	HINSTANCE hInstance,
-	HINSTANCE hPrevInstance,
-	LPSTR lpCmdLine,
-	int nCmdShow
-)
+int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR szCmdLine, int iCmdShow)
 {
-	WNDCLASSEX wcx;
-	HWND hwnd;
+	static TCHAR appName[] = _T("MyApp");
+
+	WNDCLASSEX wndclass;
+	HWND hWnd;
 	MSG msg;
-	
-	// 1.注册窗口
-	wcx.cbSize = sizeof(WNDCLASSEX);
-	wcx.style = CS_HREDRAW | CS_VREDRAW;
-	wcx.lpfnWndProc = WindowProc;	// 窗口处理过程
-	wcx.cbClsExtra = 0;
-	wcx.cbWndExtra = 0;
-	wcx.hInstance = hInstance;
-	wcx.hIcon = LoadIcon(NULL, IDI_APPLICATION);
-	wcx.hCursor = LoadCursor(NULL, IDC_ARROW);
-	wcx.hbrBackground = (HBRUSH)COLOR_WINDOW;
-	wcx.lpszMenuName = NULL;
-	wcx.lpszClassName = L"MyApp";
-	wcx.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
 
-	if (!RegisterClassEx(&wcx)) {
-		MessageBox(NULL, L"Register window class failure.", L"Message", MB_OK | MB_ICONERROR);
-		return GetLastError();
+	wndclass.cbClsExtra = 0;
+	wndclass.cbSize = sizeof(WNDCLASSEX);
+	wndclass.cbWndExtra = 0;
+	wndclass.hbrBackground = (HBRUSH)COLOR_WINDOW;
+	wndclass.hCursor = LoadCursor(NULL, IDC_ARROW);
+	wndclass.hIcon = LoadIcon(NULL, IDI_APPLICATION);
+	wndclass.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
+	wndclass.hInstance = hInstance;
+	wndclass.lpfnWndProc = (WNDPROC)WindowProc;
+	wndclass.lpszClassName = appName;
+	wndclass.lpszMenuName = NULL;
+	wndclass.style = CS_HREDRAW | CS_VREDRAW;
+
+	if (!RegisterClassEx(&wndclass)) {
+		MessageBox(NULL, _T("Register window class fail."), _T("Message"), MB_OK | MB_ICONERROR);
+		return 0;
 	}
-	
-	// 2.创建窗口
-	hwnd = CreateWindow(
-		L"MyApp",
-		L"DEMO Window",
-		WS_OVERLAPPEDWINDOW,
-		CW_USEDEFAULT,
-		CW_USEDEFAULT,
-		CW_USEDEFAULT,
-		CW_USEDEFAULT,
-		NULL,
-		NULL,
-		hInstance,
-		NULL
-	);
 
-	if (!hwnd) {
-		MessageBox(NULL, L"Create window failure.", L"Message", MB_OK | MB_ICONERROR);
-		return GetLastError();
-	}
-	
-	// 3.显示窗口
-	ShowWindow(hwnd, nCmdShow);
-	UpdateWindow(hwnd);
+	hWnd = CreateWindow(appName, _T("My Application"), WS_OVERLAPPEDWINDOW^WS_THICKFRAME^WS_MAXIMIZEBOX, CW_USEDEFAULT, CW_USEDEFAULT, 800, 600, NULL, NULL, hInstance, NULL);
+	ShowWindow(hWnd, iCmdShow);
+	UpdateWindow(hWnd);
 
-	// 4.消息循环
-	while (GetMessage(&msg, NULL, 0, 0)) {
+	while (GetMessage(&msg, NULL, 0, 0))
+	{
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
 	}
-
-	return (int)msg.wParam;
+	return 0;
 }
 
-// 窗口消息处理过程
-LRESULT CALLBACK WindowProc(
-	HWND hwnd,
-	UINT uMsg,
-	WPARAM wParam,
-	LPARAM lParam
-)
+LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	switch(uMsg) {
-		case WM_CLOSE:
-			if(IDOK == MessageBox(hwnd, L"是否确认退出程序？", L"消息", MB_OKCANCEL | MB_ICONQUESTION)) {
-				PostQuitMessage(0);
-			}
-			break;
-		case WM_DESTROY:
-			PostQuitMessage(0);
-			break;
-		default:
-			return DefWindowProc(hwnd, uMsg, wParam, lParam);
+	HDC hDc;
+	PAINTSTRUCT ps;
+	RECT rect;
+	HFONT hFont;
+
+	LOGFONT lf;
+	memset(&lf, 0, sizeof(LOGFONT));
+	lstrcpy(lf.lfFaceName, _T("Tahoma"));
+	lf.lfHeight = 80;
+
+	switch (uMsg)
+	{
+	case WM_PAINT:
+		hDc = BeginPaint(hWnd, &ps);
+		GetClientRect(hWnd, &rect);
+		hFont = CreateFontIndirect(&lf);
+		SelectObject(hDc, hFont);
+		SetBkMode(hDc, TRANSPARENT);
+		DrawText(hDc, _T("Hello World"), -1, &rect, DT_VCENTER | DT_SINGLELINE | DT_CENTER);
+		EndPaint(hWnd, &ps);
+		break;
+	case WM_DESTROY:
+		PostQuitMessage(0);
+		break;
+	default:
+		return DefWindowProc(hWnd, uMsg, wParam, lParam);
+		break;
 	}
 	return 0;
 }
