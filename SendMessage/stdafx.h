@@ -1,6 +1,6 @@
-// stdafx.h : ±ê×¼ÏµÍ³°üº¬ÎÄ¼şµÄ°üº¬ÎÄ¼ş£¬
-// »òÊÇ¾­³£Ê¹ÓÃµ«²»³£¸ü¸ÄµÄ
-// ÌØ¶¨ÓÚÏîÄ¿µÄ°üº¬ÎÄ¼ş
+// stdafx.h : æ ‡å‡†ç³»ç»ŸåŒ…å«æ–‡ä»¶çš„åŒ…å«æ–‡ä»¶ï¼Œ
+// æˆ–æ˜¯ç»å¸¸ä½¿ç”¨ä½†ä¸å¸¸æ›´æ”¹çš„
+// ç‰¹å®šäºé¡¹ç›®çš„åŒ…å«æ–‡ä»¶
 //
 
 #pragma once
@@ -9,19 +9,11 @@
 #include <tchar.h>
 #include "resource.h"
 
-// ÏÂÃæÕâ¸öºêÓÃÓÚ´¦Àí¿Ø¼ş·ç¸ñµÄ manifest
-#ifdef _UNICODE
-#if defined _M_IX86
-#pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='x86' publicKeyToken='6595b64144ccf1df' language='*'\"")
-#elif defined _M_IA64
-#pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='ia64' publicKeyToken='6595b64144ccf1df' language='*'\"")
-#elif defined _M_X64
-#pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='amd64' publicKeyToken='6595b64144ccf1df' language='*'\"")
-#else
-#pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
-#endif
-#endif
+// manifest æ¸…å•æŒ‡æ˜ ComCtl32.dll æ§ä»¶çš„ç‰ˆæœ¬ä¸º6.0 ï¼ˆXPé£æ ¼æ§ä»¶ï¼‰
+#pragma comment(linker,"\"/manifestdependency:type='win32' \
+name='Microsoft.Windows.Common-Controls' version='6.0.0.0' \
+processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
-// Ê¹ÓÃComCtl32µÄ¿Ø¼ş
+// ä½¿ç”¨ComCtl32çš„æ§ä»¶
 #include <CommCtrl.h>
-#pragma comment(lib, "comctl32.lib")
+#pragma comment(lib, "comctl32.lib") // comctl32.lib  å¯ä»¥åœ¨é¡¹ç›®å±æ€§ -> é“¾æ¥å™¨ -> é™„ä»¶ä¾èµ–é¡¹ é‡Œé¢æ·»åŠ 
