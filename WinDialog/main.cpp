@@ -1,22 +1,14 @@
 #include <Windows.h>
 #include "resource.h"
 
-// ÏÂÃæÕâ¸öºêÓÃÓÚ´¦Àí¿Ø¼ş·ç¸ñµÄ manifest
-#ifdef _UNICODE
-#if defined _M_IX86
-#pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='x86' publicKeyToken='6595b64144ccf1df' language='*'\"")
-#elif defined _M_IA64
-#pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='ia64' publicKeyToken='6595b64144ccf1df' language='*'\"")
-#elif defined _M_X64
-#pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='amd64' publicKeyToken='6595b64144ccf1df' language='*'\"")
-#else
-#pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
-#endif
-#endif
+// manifest æ¸…å•æŒ‡æ˜ ComCtl32.dll æ§ä»¶çš„ç‰ˆæœ¬ä¸º6.0 ï¼ˆXPé£æ ¼æ§ä»¶ï¼‰
+#pragma comment(linker,"\"/manifestdependency:type='win32' \
+name='Microsoft.Windows.Common-Controls' version='6.0.0.0' \
+processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
 INT_PTR CALLBACK DialogProc(HWND, UINT, WPARAM, LPARAM);
 
-// WinMainÈë¿Úº¯Êı
+// WinMainå…¥å£å‡½æ•°
 int WINAPI WinMain(
 	HINSTANCE hInstance,
 	HINSTANCE hPrevInstance,
@@ -28,7 +20,7 @@ int WINAPI WinMain(
 	return 0;
 }
 
-// DialogÏûÏ¢´¦Àí¹ı³Ì
+// Dialogæ¶ˆæ¯å¤„ç†è¿‡ç¨‹
 INT_PTR CALLBACK DialogProc(
 	HWND hwndDlg,
 	UINT uMsg,
@@ -41,7 +33,7 @@ INT_PTR CALLBACK DialogProc(
 	{
 	case WM_COMMAND:
 		if(ID_CLOSE == wParam) {
-			if(IDOK == MessageBox(hwndDlg, L"ÊÇ·ñ¹Ø±Õ´°¿Ú£¿", L"ÏûÏ¢", MB_OKCANCEL | MB_ICONQUESTION)) {
+			if(IDOK == MessageBox(hwndDlg, L"æ˜¯å¦å…³é—­çª—å£ï¼Ÿ", L"æ¶ˆæ¯", MB_OKCANCEL | MB_ICONQUESTION)) {
 				EndDialog(hwndDlg, (INT_PTR)wParam);
 			}
 		}
