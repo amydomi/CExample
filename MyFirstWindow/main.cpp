@@ -39,18 +39,18 @@ ATOM MyRegisterClass(HINSTANCE hInstance, LPCTSTR className)
 {
 	WNDCLASSEX wc;
 	
-	wc.cbClsExtra = 0;
+	wc.hInstance = hInstance;
+	wc.lpfnWndProc = WindowProc;
+	wc.lpszClassName = className;
 	wc.cbSize = sizeof(WNDCLASSEX);
-	wc.cbWndExtra = 0;
 	wc.hbrBackground = (HBRUSH)COLOR_WINDOW;
 	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
 	wc.hIcon = LoadIcon(NULL, IDI_APPLICATION);
 	wc.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
-	wc.hInstance = hInstance;
-	wc.lpfnWndProc = WindowProc;
-	wc.lpszClassName = className;
 	wc.lpszMenuName = NULL;
 	wc.style = CS_VREDRAW | CS_HREDRAW;
+	wc.cbWndExtra = 0;
+	wc.cbClsExtra = 0;
 	
 	return RegisterClassEx(&wc);
 }
