@@ -6,7 +6,6 @@ BOOL InitInstance(HINSTANCE hInstance, LPCTSTR className, int nCmdShow);
 
 int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE prevInstance, PTSTR szCmdLine, int nCmdShow)
 {
-	
 	MSG msg;
 	LPCTSTR className = TEXT("MyFirstWindow");
 	
