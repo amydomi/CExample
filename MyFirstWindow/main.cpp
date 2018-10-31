@@ -4,25 +4,25 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 ATOM MyRegisterClass(HINSTANCE hInstance, LPCTSTR className);
 BOOL InitInstance(HINSTANCE hInstance, LPCTSTR className, int nCmdShow);
 
-int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPTSTR szCmdLine, int nCmdShow)
+int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE prevInstance, PTSTR szCmdLine, int nCmdShow)
 {
 	
 	MSG msg;
 	LPCTSTR className = TEXT("MyFirstWindow");
 	
-	// ×¢²á´°¿ÚÀà
+	// æ³¨å†Œçª—å£ç±»
 	if (!MyRegisterClass(hInstance, className)) {
 		MessageBox(NULL, TEXT("Window Registeration Failed!"), TEXT("Error"), MB_OK | MB_ICONERROR);
 		return GetLastError();
 	}
 
-	// ´´½¨²¢ÏÔÊ¾´°¿Ú
+	// åˆ›å»ºå¹¶æ˜¾ç¤ºçª—å£
 	if (!InitInstance(hInstance, className, nCmdShow)) {
 		MessageBox(NULL, TEXT("Window Createation Failed!"), TEXT("Error"), MB_OK | MB_ICONERROR);
 		return GetLastError();
 	}
 
-	// ÏûÏ¢Ñ­»·
+	// æ¶ˆæ¯å¾ªç¯
 	while (GetMessage(&msg, NULL, 0, 0) > 0) {
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
@@ -31,9 +31,9 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPTSTR szCmdLin
 }
 
 //
-//  º¯Êı: MyRegisterClass(HINSTANCE, LPCTSTR)
+//  å‡½æ•°: MyRegisterClass(HINSTANCE, LPCTSTR)
 //
-//  Ä¿±ê: ×¢²á´°¿ÚÀà¡£
+//  ç›®æ ‡: æ³¨å†Œçª—å£ç±»ã€‚
 //
 ATOM MyRegisterClass(HINSTANCE hInstance, LPCTSTR className)
 {
@@ -56,9 +56,9 @@ ATOM MyRegisterClass(HINSTANCE hInstance, LPCTSTR className)
 }
 
 //
-//  º¯Êı: InitInstance(HINSTANCE, LPCTSTR, int)
+//  å‡½æ•°: InitInstance(HINSTANCE, LPCTSTR, int)
 //
-//  Ä¿±ê: ´´½¨²¢ÏÔÊ¾´°¿Ú¡£
+//  ç›®æ ‡: åˆ›å»ºå¹¶æ˜¾ç¤ºçª—å£ã€‚
 //
 BOOL InitInstance(HINSTANCE hInstance, LPCTSTR className, int nCmdShow)
 {
@@ -77,9 +77,9 @@ BOOL InitInstance(HINSTANCE hInstance, LPCTSTR className, int nCmdShow)
 }
 
 //
-//  º¯Êı: WindowProc(HWND, UINT, WPARAM, LPARAM)
+//  å‡½æ•°: WindowProc(HWND, UINT, WPARAM, LPARAM)
 //
-//  Ä¿±ê: ´¦ÀíÖ÷´°¿ÚÏûÏ¢¡£
+//  ç›®æ ‡: å¤„ç†ä¸»çª—å£æ¶ˆæ¯ã€‚
 //
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
