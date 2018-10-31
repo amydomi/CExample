@@ -1,9 +1,11 @@
 #include <Windows.h>
+#include <tchar.h>
 
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 ATOM MyRegisterClass(HINSTANCE hInstance, LPCTSTR className);
 BOOL InitInstance(HINSTANCE hInstance, LPCTSTR className, int nCmdShow);
 
+// _tWinMain 在tchar.h中声明，解决Unicode和多字符集之间切换的兼容问题，建议使用
 int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE prevInstance, PTSTR szCmdLine, int nCmdShow)
 {
 	MSG msg;
