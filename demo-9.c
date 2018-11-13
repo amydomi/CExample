@@ -1,69 +1,89 @@
 #include <Windows.h>
 #include <tchar.h>
 
+ATOM MyRegisterClass(HINSTANCE, LPCTSTR);
+BOOL InitInstance(HINSTANCE, LPCTSTR);
+DWORD SyStemError();
+
 LRESULT CALLBACK WindowProc(HWND, UINT, WPARAM, LPARAM);
 
-int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR szCmdLine, int iCmdShow)
+int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR szCmdLine, int iCmdShow)
 {
-	static TCHAR appName[] = _T("MyApp");
-
-	WNDCLASSEX wndclass;
-	HWND hWnd;
 	MSG msg;
-
-	wndclass.cbClsExtra = 0;
-	wndclass.cbSize = sizeof(WNDCLASSEX);
-	wndclass.cbWndExtra = 0;
-	wndclass.hbrBackground = (HBRUSH)COLOR_WINDOW;
-	wndclass.hCursor = LoadCursor(NULL, IDC_ARROW);
-	wndclass.hIcon = LoadIcon(NULL, IDI_APPLICATION);
-	wndclass.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
-	wndclass.hInstance = hInstance;
-	wndclass.lpfnWndProc = (WNDPROC)WindowProc;
-	wndclass.lpszClassName = appName;
-	wndclass.lpszMenuName = NULL;
-	wndclass.style = CS_HREDRAW | CS_VREDRAW;
-
-	if (!RegisterClassEx(&wndclass)) {
-		MessageBox(NULL, _T("Register window class fail."), _T("Message"), MB_OK | MB_ICONERROR);
-		return 0;
+	LPCTSTR szClassName = _T("MyApp");
+	
+	if (!MyRegisterClass(hInstance, szClassName)) {
+		return SyStemError();
 	}
 
-	hWnd = CreateWindow(appName, _T("My Application"), WS_OVERLAPPEDWINDOW^WS_THICKFRAME^WS_MAXIMIZEBOX, CW_USEDEFAULT, CW_USEDEFAULT, 800, 600, NULL, NULL, hInstance, NULL);
-	ShowWindow(hWnd, iCmdShow);
-	UpdateWindow(hWnd);
+	if (!InitInstance(hInstance, szClassName)) {
+		return SyStemError();
+	}
 
-	while (GetMessage(&msg, NULL, 0, 0))
-	{
+	while (GetMessage(&msg, NULL, 0, 0) > 0) {
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
 	}
-	return 0;
+
+	return (int)msg.wParam;
+}
+
+DWORD SyStemError()
+{
+	LPVOID lpMsgBuf;
+	DWORD dwMessageId = GetLastError();
+	FormatMessage(
+		FORMAT_MESSAGE_ALLOCATE_BUFFER |
+		FORMAT_MESSAGE_FROM_SYSTEM |
+		FORMAT_MESSAGE_IGNORE_INSERTS,
+		NULL,
+		dwMessageId,
+		MAKELANGID(LANG_SYSTEM_DEFAULT, LANG_USER_DEFAULT),
+		(LPTSTR)&lpMsgBuf,
+		0, NULL);
+
+	MessageBox(NULL, lpMsgBuf, _T("Error"), MB_OK | MB_ICONERROR);
+	LocalFree(lpMsgBuf);
+
+	return dwMessageId;
+}
+
+ATOM MyRegisterClass(HINSTANCE hInstance, LPCTSTR szClassName)
+{
+	WNDCLASSEX wc;
+
+	wc.cbSize = sizeof(WNDCLASSEX);
+	wc.cbClsExtra = 0;
+	wc.cbWndExtra = 0;
+	wc.hbrBackground = (HBRUSH)COLOR_WINDOW;
+	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
+	wc.hIcon = LoadIcon(NULL, IDI_APPLICATION);
+	wc.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
+	wc.hInstance = hInstance;
+	wc.lpfnWndProc = WindowProc;
+	wc.lpszClassName = szClassName;
+	wc.lpszMenuName = NULL;
+	wc.style = CS_VREDRAW | CS_HREDRAW;
+
+	return RegisterClassEx(&wc);
+}
+BOOL InitInstance(HINSTANCE hInstance, LPCTSTR szClassName)
+{
+	HWND hWnd = CreateWindow(szClassName, _T("My Application"),
+		WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, 800, 600,
+		NULL, NULL, hInstance, 0);
+
+	if (!hWnd) return FALSE;
+
+	ShowWindow(hWnd, SW_SHOW);
+	UpdateWindow(hWnd);
+
+	return TRUE;
 }
 
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	HDC hDc;
-	PAINTSTRUCT ps;
-	RECT rect;
-	HFONT hFont;
-
-	LOGFONT lf;
-	memset(&lf, 0, sizeof(LOGFONT));
-	lstrcpy(lf.lfFaceName, _T("Tahoma"));
-	lf.lfHeight = 80;
-
-	switch (uMsg)
-	{
-	case WM_PAINT:
-		hDc = BeginPaint(hWnd, &ps);
-		GetClientRect(hWnd, &rect);
-		hFont = CreateFontIndirect(&lf);
-		SelectObject(hDc, hFont);
-		SetBkMode(hDc, TRANSPARENT);
-		DrawText(hDc, _T("Hello World"), -1, &rect, DT_VCENTER | DT_SINGLELINE | DT_CENTER);
-		EndPaint(hWnd, &ps);
-		break;
+	switch (uMsg) {
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;
@@ -71,5 +91,5 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		return DefWindowProc(hWnd, uMsg, wParam, lParam);
 		break;
 	}
-	return 0;
+	return FALSE;
 }
