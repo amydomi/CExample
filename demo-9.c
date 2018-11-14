@@ -42,7 +42,7 @@ DWORD SyStemError()
 		(LPTSTR)&lpMsgBuf,
 		0, NULL);
 
-	MessageBox(NULL, lpMsgBuf, _T("Error"), MB_OK | MB_ICONERROR);
+	MessageBox(NULL, (LPTSTR)lpMsgBuf, _T("Error"), MB_OK | MB_ICONERROR);
 	LocalFree(lpMsgBuf);
 
 	return dwMessageId;
