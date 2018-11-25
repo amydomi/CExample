@@ -1,9 +1,9 @@
-#ifndef _STUDENT_H_
+﻿#ifndef _STUDENT_H_
 #define _STUDENT_H_
 
 #include <string.h>
 
-// ASCII�汾
+// ASCII版本
 typedef struct tagStudentA
 {
 	char *name;
@@ -15,7 +15,7 @@ StudentA * new_studentA(char *, int, float);
 void print_studentA(StudentA *);
 void free_studentA(StudentA *);
 
-// Unicode�汾
+// Unicode版本
 typedef struct tagStudentW
 {
 	wchar_t *name;
@@ -27,7 +27,7 @@ StudentW * new_studentW(wchar_t *, int, float);
 void print_studentW(StudentW *);
 void free_studentW(StudentW *);
 
-// ͨ�ð汾
+// 通用版本
 #ifdef _UNICODE
 #define _T(x)	L##x
 #define Student StudentW

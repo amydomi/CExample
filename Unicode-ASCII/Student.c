@@ -1,10 +1,10 @@
-#include <stdio.h>
+ï»¿#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include "Student.h"
 
-// ASCII°æ
+// ASCIIç‰ˆ
 StudentA * new_studentA(char *name, int age, float height)
 {
 	StudentA * stu = (StudentA *)malloc(sizeof(StudentA));
@@ -26,7 +26,7 @@ void free_studentA(StudentA *stu)
 	free(stu);
 }
 
-// Unicode°æ±¾
+// Unicodeç‰ˆæœ¬
 StudentW * new_studentW(wchar_t *name, int age, float height)
 {
 	StudentW * stu = (StudentW *)malloc(sizeof(StudentW));
